@@ -327,42 +327,7 @@ while(true){
 
     close(client_socket);
 }
-void process_email(const string& email, int key_sock, EVP_PKEY* pkey) {
-    if (email.empty() || email.find("No emails found") != string::npos) return;
-    vector<string> parts = split(email, '~');
-    if (parts.size() != 7) return;
-    try {
-        string sender_id = trim(parts[0]);
-        auto iv = base64_decode(parts[1]);
-        auto enc_msg = base64_decode(parts[2]);
-        auto hmac = base64_decode(parts[3]);
-        auto signed_hmac = base64_decode(parts[4]);
-        auto enc_key = base64_decode(parts[5]);
-        auto signed_key = base64_decode(parts[6]);
 
-        EVP_PKEY* sender_pub = get_recipient_pubkey(key_sock, sender_id);
-        if (!sender_pub) return;
-        if (!verify_signature(signed_key.data(), signed_key.size(), enc_key.data(), enc_key.size(), sender_pub)) {
-            EVP_PKEY_free(sender_pub);
-            return;
-        }
-        // Decrypt key and message
-        auto aes_key = decrypt_key(enc_key, pkey);
-        if (!verify_signature(signed_hmac.data(), signed_hmac.size(), hmac.data(), hmac.size(), sender_pub)) {
-            EVP_PKEY_free(sender_pub);
-            return;
-        }
-        auto computed_hmac = generate_HMAC(enc_msg.data(), enc_msg.size(), aes_key.data(), AES_KEY_SIZE);
-        if (hmac != computed_hmac) {
-            EVP_PKEY_free(sender_pub);
-            return;
-        }
-        auto decrypted = aes_crypt(enc_msg.data(), enc_msg.size(), aes_key.data(), iv.data(), false);
-        cout << "\nFrom: " << sender_id << "\n" << string(decrypted.begin(), decrypted.end()) << "\n";
-
-        EVP_PKEY_free(sender_pub);
-    } catch (...) {}
-}
 void loadExistingKeys() {
     ifstream file("key_store.txt");
     if (!file.is_open()) {
