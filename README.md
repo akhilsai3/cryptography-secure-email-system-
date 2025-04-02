@@ -53,15 +53,16 @@ Select 0. Exit to quit
 
 ```
 **🛠️ Requirements**
-
+```
 Linux OS
 OpenSSL 1.1.1+
 g++ (C++17 compatible)
 4GB RAM (minimum)
-
+```
 **🔐 Security Features**
-
+```
 All emails encrypted with unique AES-256 session keys
 RSA-2048 for key exchange
 HMAC-SHA256 for message integrity
 Server-signed public keys prevent MITM attacks
+```
