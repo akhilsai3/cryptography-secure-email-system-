@@ -167,6 +167,7 @@ void handleClient(int clientSocket) {
     string username;
         char buffer[BUFFER_SIZE] = {0};
     bool authenticated = false;
+
     // Authentication
     while (!authenticated) {
         int bytes = recv(clientSocket, buffer, BUFFER_SIZE, 0);
@@ -181,10 +182,12 @@ void handleClient(int clientSocket) {
             if (!part.empty()) parts.push_back(part);
             received.erase(0, pos + 1);
         }
+
         if (parts.size() >= 3) {
             string choice = parts[0];
             username = parts[1];
             string password = parts[2];
+            
             if (choice == "1") { // Login
                 if (authenticateUser(username, password)) {
                     write(clientSocket, "AUTH_SUCCESS\n", 13);
