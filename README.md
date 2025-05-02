@@ -65,4 +65,5 @@ All emails encrypted with unique AES-256 session keys
 RSA-2048 for key exchange
 HMAC-SHA256 for message integrity
 Server-signed public keys prevent MITM attacks
+time-stamp based emails to prevent replay attacks
 ```
