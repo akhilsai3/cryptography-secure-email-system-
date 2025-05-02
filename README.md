@@ -18,8 +18,8 @@ A **secure email communication system** that provides:
    ```bash
    # Build all components
    g++ -std=c++17 keyserver.cpp -o keyserver -lssl -lcrypto
-   g++ -std=c++17 keyserver.cpp -o keyserver -lssl -lcrypto
-   g++ -std=c++17 keyserver.cpp -o keyserver -lssl -lcrypto
+   g++ -std=c++17 gmailserver.cpp -o gmailserver -lssl -lcrypto
+   g++ -std=c++17 client.cpp -o client -lssl -lcrypto
    ```
 2.**Running**(in seperate terminals):
   ```bash
